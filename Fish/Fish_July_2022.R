@@ -15,9 +15,9 @@ StationList2<-StationList1
 
 
 #######Get Markers
-
+All$Order<- recode(All$Order, Teleostei__o = NA)
 all1<-subset(All,Class=="Actinopteri")
-
+All$Order<- recode(All$Order, 'N' = NA)
 
 ###Class
 
@@ -350,18 +350,21 @@ Fish<-Fish[!(Fish$lvl2=="N"),]
 Fish<-Fish[!(Fish$lvl1=="zzOther"),]
 Fish<-Fish[!(Fish$lvl2=="zzOther"),]
 Fish<-Fish[complete.cases(Fish), ]
+Fish<-Fish[!(Fish$Code=="11111"),]
+
 
 #######make tree
 ###########need to write edges code and change images, run app
 
 categories <- unique(Fish$Code) 
+
 categories
 
 links2<-Fish
 nodes1 <- subset(links2, select = -c(lvl1) )
 nodes1$path<-path_to_images
 nodes1$png<-".png"
-nodes <- data.frame(nodes1, id = 1:115, 
+nodes <- data.frame(nodes1, id = 1:112, 
                     shape = c("image"),
                     image = gsub(" ","",paste(nodes1$path,"",nodes1$Code,"",nodes1$png)),
                     size=220)
@@ -371,7 +374,7 @@ nodes <- nodes %>% mutate(font.size = 800)
 nodes <- nodes %>% mutate(size = 500)
 
 
-nodes[nrow(nodes) + 1,] <- c(1, "", 116,"image","https://hailaschultz.github.io/genomics/Fish/MyLegend.png",4000,500)
+nodes[nrow(nodes) + 1,] <- c(1, "", 113,"image","https://hailaschultz.github.io/genomics/Fish/MyLegend.png",4000,500)
 
 
 
@@ -385,7 +388,7 @@ edges = edges[-1,]
 
 
 plot<-visNetwork(nodes, edges, height=800,width="100%") %>%
-  visHierarchicalLayout(levelSeparation=12000,direction = "LR",nodeSpacing = 2500)%>%
+  visHierarchicalLayout(levelSeparation=14000,direction = "LR",nodeSpacing = 2500)%>%
   visNodes(shapeProperties = list(useBorderWithImage = FALSE),font=list(color="black",multi=TRUE,background="white"))%>%
   visPhysics(enabled=FALSE)%>%
   visEdges(smooth=list(enabled=TRUE,type="cubicBezier",forceDirection="horizontal"),color="black",width=40)
